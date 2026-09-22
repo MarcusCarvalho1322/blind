@@ -3,24 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BIZZ.IA · Auditoria Executiva — Dossiê Forense de Conversão</title>
-  <meta name="description" content="Dossiê forense executivo de conversão: diagnóstico dos 6 eixos comerciais, raio-X de atendimento e matriz de resgate high-ticket.">
+  <title>BIZZ.IA · Auditoria Executiva — Acesso Restrito</title>
+  <meta name="description" content="Dossiê forense executivo de conversão. Acesso restrito mediante senha.">
   <meta name="author" content="BIZZ.IA">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="https://bizzia.com.br/">
   <meta name="theme-color" content="#000000">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="BIZZ.IA">
-  <meta property="og:title" content="BIZZ.IA · Auditoria Executiva — Dossiê Forense de Conversão">
-  <meta property="og:description" content="Diagnóstico dos 6 eixos comerciais, raio-X de atendimento e matriz de resgate high-ticket.">
-  <meta property="og:url" content="https://bizzia.com.br/">
-  <meta property="og:locale" content="pt_BR">
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="BIZZ.IA · Auditoria Executiva — Dossiê Forense">
-  <meta name="twitter:description" content="Diagnóstico forense de conversão e matriz de resgate high-ticket.">
   <!-- Google Fonts: Cinzel & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +20,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- CryptoJS (decriptação local) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -87,347 +78,149 @@
 </head>
 <body class="custom-scrollbar antialiased selection:bg-bizzCopper selection:text-white">
 
-  <!-- BARRA DE TOPO INSTITUCIONAL -->
-  <header class="border-b border-bizzCardBorder sticky top-0 bg-bizzBlack/90 backdrop-blur-md z-50 px-8 py-4 flex justify-between items-center">
-    <div class="flex items-center space-x-4">
-      <div class="w-9 h-9 border border-bizzGold flex items-center justify-center rounded-sm bg-bizzCard">
-        <span class="font-luxury text-bizzGold font-bold text-lg">B</span>
+  <!-- TELA DE LOGIN -->
+  <div id="login" class="min-h-screen flex items-center justify-center px-6">
+    <div class="w-full max-w-sm">
+      <div class="bg-bizzCard border border-bizzCardBorder gold-border-glow rounded-lg p-8">
+        <div class="flex items-center justify-center mb-6">
+          <div class="w-12 h-12 border border-bizzGold flex items-center justify-center rounded-sm bg-bizzBlack">
+            <span class="font-luxury text-bizzGold font-bold text-2xl">B</span>
+          </div>
+        </div>
+        <h1 class="font-luxury text-lg text-center text-bizzText tracking-wider uppercase mb-1">bizz.ia</h1>
+        <p class="text-xs text-center text-bizzMuted mb-8 uppercase tracking-widest">Auditoria Executiva · Acesso Restrito</p>
+        <label class="text-xs text-bizzMuted uppercase tracking-widest block mb-2">Senha de acesso</label>
+        <input id="pw" type="password" autocomplete="off" placeholder="••••••••••••"
+               class="w-full bg-black border border-bizzCardBorder focus:border-bizzGold focus:outline-none rounded px-4 py-3 text-bizzText text-sm mb-4" />
+        <p id="err" class="text-xs text-red-400 mb-4" style="min-height:1rem"></p>
+        <button onclick="unlock()"
+                class="w-full py-3 bg-bizzCopper/20 hover:bg-bizzCopper/40 border border-bizzCopper/50 text-bizzGold rounded text-sm tracking-wider uppercase transition">
+          Entrar
+        </button>
       </div>
-      <div>
-        <h1 class="text-xs uppercase tracking-widest text-bizzMuted">Engenharia Forense de Conversão</h1>
-        <p class="text-sm font-semibold tracking-wider text-bizzText uppercase font-luxury">bizz.ia · Auditoria Executiva</p>
-      </div>
+      <p class="text-center text-[10px] text-bizzMuted mt-6 uppercase tracking-widest">BIZZ.IA · Documento confidencial</p>
     </div>
-    <div class="flex items-center space-x-6">
-      <div class="text-right hidden sm:block">
-        <span class="text-xs text-bizzMuted uppercase tracking-widest block">Unidade Auditada</span>
-        <span class="text-sm font-medium text-bizzGold">Clínica La Vienne Medicina & Beleza</span>
-      </div>
-      <span class="px-3 py-1 bg-red-950/40 border border-red-500/30 text-red-400 text-xs font-semibold rounded tracking-wider uppercase flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-        Score Crítico: 28.4%
-      </span>
-    </div>
-  </header>
+  </div>
 
-  <main class="max-w-7xl mx-auto px-6 py-10 space-y-12">
+  <!-- CONTEÚDO DECRIPTADO (injetado via JS) -->
+  <div id="app" style="display:none"></div>
 
-    <!-- HERO SECTION: O ABISMO FINANCEIRO -->
-    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
-      <!-- CARD 1: HEMORRAGIA IMEDIATA -->
-      <div class="bg-bizzCard p-6 rounded-lg border border-bizzCardBorder gold-border-glow flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between text-bizzMuted text-xs tracking-widest uppercase mb-2">
-            <span>Hemorragia Imediata (Corpus)</span>
-            <i class="fa-solid fa-receipt text-bizzCopper"></i>
-          </div>
-          <h2 class="text-3xl font-luxury font-bold text-white tracking-wide">R$ 20.082<span class="text-bizzCopper text-lg">,00</span></h2>
-          <p class="text-xs text-bizzMuted mt-2 leading-relaxed">
-            Perda nominal mapeada nas cotações ativas que receberam valor no WhatsApp e foram abandonadas sem contorno.
-          </p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-bizzCardBorder flex justify-between text-xs">
-          <span class="text-bizzMuted">Volume Auditado:</span>
-          <span class="text-bizzGold font-medium">115 Conversas (38 Comerciais)</span>
-        </div>
-      </div>
-
-      <!-- CARD 2: HEMORRAGIA ANUALIZADA (ESTIMATIVA) -->
-      <div class="bg-bizzCard p-6 rounded-lg border border-bizzCardBorder gold-border-glow flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between text-bizzMuted text-xs tracking-widest uppercase mb-2">
-            <span>Abismo Anualizado Projetado</span>
-            <i class="fa-solid fa-chart-line-down text-red-400"></i>
-          </div>
-          <h2 class="text-3xl font-luxury font-bold text-red-400 tracking-wide">R$ 900.000<span class="text-bizzGold text-lg">,00</span></h2>
-          <p class="text-xs text-bizzMuted mt-2 leading-relaxed">
-            [ESTIMATIVA] Projeção de 12 meses mantendo o ralo atual de 26 leads/mês descartados com LTV conservador.
-          </p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-bizzCardBorder flex justify-between text-xs">
-          <span class="text-bizzMuted">Custo de Inação:</span>
-          <span class="text-red-400 font-medium">R$ 75.000,00 / mês</span>
-        </div>
-      </div>
-
-      <!-- CARD 3: SCORE BIZZ-GOLD -->
-      <div class="bg-bizzCard p-6 rounded-lg border border-bizzCardBorder gold-border-glow flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between text-bizzMuted text-xs tracking-widest uppercase mb-2">
-            <span>Score Bizz-Gold™ da Unidade</span>
-            <i class="fa-solid fa-shield-halved text-bizzGold"></i>
-          </div>
-          <div class="flex items-baseline gap-3">
-            <h2 class="text-4xl font-luxury font-bold gold-gradient-text">28.4%</h2>
-            <span class="text-xs uppercase tracking-wider text-red-400 font-semibold">Risco Crítico</span>
-          </div>
-          <p class="text-xs text-bizzMuted mt-2 leading-relaxed">
-            Capitulação em SPIN Selling e Contorno de Objeções (0%). A equipa atua como operadora de balcão de preços.
-          </p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-bizzCardBorder flex justify-between text-xs">
-          <span class="text-bizzMuted">Meta Mínima High-Ticket:</span>
-          <span class="text-bizzGold font-medium">85.0% de Aderência</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION GRÁFICOS: SEGMENTAÇÃO E RADAR BIZZ-GOLD -->
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      
-      <!-- RADAR DO SCORE -->
-      <div class="bg-bizzCard p-6 rounded-lg border border-bizzCardBorder">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="font-luxury text-base text-bizzText font-semibold tracking-wider uppercase">
-            <i class="fa-solid fa-compass-drafting text-bizzGold mr-2"></i> Diagnóstico dos 6 Eixos Comerciais
-          </h3>
-          <span class="text-xs text-bizzMuted uppercase tracking-widest">Protocolo Blind-Audit™</span>
-        </div>
-        <div class="h-64 flex items-center justify-center">
-          <canvas id="radarChart"></canvas>
-        </div>
-      </div>
-
-      <!-- RADIOGRAFIA DO CORPUS (PIE/DOUGHNUT) -->
-      <div class="bg-bizzCard p-6 rounded-lg border border-bizzCardBorder">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="font-luxury text-base text-bizzText font-semibold tracking-wider uppercase">
-            <i class="fa-solid fa-filter text-bizzCopper mr-2"></i> Triagem do Corpus: Vendas vs. Ruído
-          </h3>
-          <span class="text-xs text-bizzMuted uppercase tracking-widest">115 Registos Analisados</span>
-        </div>
-        <div class="h-64 flex items-center justify-center">
-          <canvas id="funnelChart"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <!-- TABELA COMPARATIVA DE OPERADORES: CARLA VS. MARIA -->
-    <section class="bg-bizzCard rounded-lg border border-bizzCardBorder overflow-hidden">
-      <div class="p-6 border-b border-bizzCardBorder flex justify-between items-center">
-        <div>
-          <h3 class="font-luxury text-base text-bizzText font-semibold tracking-wider uppercase">
-            <i class="fa-solid fa-users-viewfinder text-bizzGold mr-2"></i> Raio-X Individual de Atendimento
-          </h3>
-          <p class="text-xs text-bizzMuted mt-1">Mapeamento nominal das hostesses identificadas nos logs brutos.</p>
-        </div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs text-bizzText">
-          <thead class="bg-black/50 text-bizzMuted uppercase text-[10px] tracking-widest border-b border-bizzCardBorder">
-            <tr>
-              <th class="p-4">Operadora</th>
-              <th class="p-4">Conversas Comerciais</th>
-              <th class="p-4">Conversão Real</th>
-              <th class="p-4">Latência Observada</th>
-              <th class="p-4">Vício Primário Mapeado</th>
-              <th class="p-4">Intervenção Imediata</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-bizzCardBorder">
-            <tr class="hover:bg-white/[0.02] transition">
-              <td class="p-4 font-semibold text-bizzGold flex items-center gap-2">
-                <i class="fa-solid fa-user-xmark text-bizzCopper"></i> Carla
-              </td>
-              <td class="p-4">28 tickets</td>
-              <td class="p-4 text-red-400 font-bold">10.7%</td>
-              <td class="p-4 text-bizzMuted">> 48h no Follow-up</td>
-              <td class="p-4 text-bizzMuted">Automatismo em lote (Spam) & Escassez Tóxica ("Agenda para Nov/Dez")</td>
-              <td class="p-4"><span class="px-2 py-1 bg-bizzCopper/20 text-bizzGold border border-bizzCopper/40 rounded text-[10px] uppercase">Abolir atalho de texto longo</span></td>
-            </tr>
-            <tr class="hover:bg-white/[0.02] transition">
-              <td class="p-4 font-semibold text-bizzGold flex items-center gap-2">
-                <i class="fa-solid fa-user-tag text-bizzCopper"></i> Maria
-              </td>
-              <td class="p-4">10 tickets</td>
-              <td class="p-4 text-yellow-400 font-bold">20.0%</td>
-              <td class="p-4 text-green-400 font-medium">Imediata para preços</td>
-              <td class="p-4 text-bizzMuted">Comoditização e entrega prematura de descontos sem contestação</td>
-              <td class="p-4"><span class="px-2 py-1 bg-bizzCopper/20 text-bizzGold border border-bizzCopper/40 rounded text-[10px] uppercase">Treino em SPIN Selling</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- MATRIZ DE RESGATE HIGH-TICKET (LEADS PARADOS COM COPIAR E COLAR) -->
-    <section class="space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h3 class="font-luxury text-lg text-bizzText font-semibold tracking-wider uppercase">
-            <i class="fa-solid fa-hand-holding-dollar text-bizzGold mr-2"></i> Matriz Tática de Resgate High-Ticket™
-          </h3>
-          <p class="text-xs text-bizzMuted mt-1">Leads qualificados com procedimentos de alta margem abandonados. Roteiros cirúrgicos de reativação imediata.</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <!-- RESGATE 1: DANI -->
-        <div class="bg-bizzCard rounded-lg border border-bizzCardBorder p-5 flex flex-col justify-between space-y-4">
-          <div>
-            <div class="flex justify-between items-start mb-2">
-              <span class="text-xs font-semibold text-bizzGold font-luxury">Dani (Chat [22])</span>
-              <span class="text-[10px] uppercase px-2 py-0.5 bg-bizzCopper/20 text-bizzGold border border-bizzCopper/30 rounded">R$ 4.000,00</span>
-            </div>
-            <span class="text-xs text-bizzMuted block mb-3">Hiperbárica Pós-Cirúrgica (10 sessões)</span>
-            <div class="p-3 bg-black/60 rounded border border-bizzCardBorder text-xs text-bizzText leading-relaxed script-copy">
-              "Olá, Dani. Revisando os atendimentos cirúrgicos com a Dra. Larissa, ela pediu atenção ao seu pós-operatório. A oxigenoterapia hiperbárica tem uma janela essencial logo após a cirurgia para evitar seromas e acelerar a cicatrização dos pontos em 50%. Para alinharmos seu protocolo com o cirurgião, reservei duas opções amanhã: 10h ou 14h. Qual prefere?"
-            </div>
-          </div>
-          <button onclick="copyToClipboard(this)" class="w-full py-2 bg-bizzCopper/20 hover:bg-bizzCopper/40 border border-bizzCopper/50 text-bizzGold rounded text-xs tracking-wider uppercase transition flex items-center justify-center gap-2">
-            <i class="fa-regular fa-copy"></i> Copiar Script
-          </button>
-        </div>
-
-        <!-- RESGATE 2: MÔNICA -->
-        <div class="bg-bizzCard rounded-lg border border-bizzCardBorder p-5 flex flex-col justify-between space-y-4">
-          <div>
-            <div class="flex justify-between items-start mb-2">
-              <span class="text-xs font-semibold text-bizzGold font-luxury">Mônica Vizer (Chat [80])</span>
-              <span class="text-[10px] uppercase px-2 py-0.5 bg-bizzCopper/20 text-bizzGold border border-bizzCopper/30 rounded">R$ 6.900,00</span>
-            </div>
-            <span class="text-xs text-bizzMuted block mb-3">Ácido Hialurónico (4 Ampolas)</span>
-            <div class="p-3 bg-black/60 rounded border border-bizzCardBorder text-xs text-bizzText leading-relaxed script-copy">
-              "Mônica, boa tarde! Estive reunida com a Dra. Larissa a rever os planeamentos faciais. Ela pontuou que podemos executar o seu tratamento em duas fases: iniciamos com as 2 ampolas estruturantes na data do seu retorno. Assim, garante o efeito tensor imediato sem pesar no orçamento do mês. Posso deixar o produto reservado?"
-            </div>
-          </div>
-          <button onclick="copyToClipboard(this)" class="w-full py-2 bg-bizzCopper/20 hover:bg-bizzCopper/40 border border-bizzCopper/50 text-bizzGold rounded text-xs tracking-wider uppercase transition flex items-center justify-center gap-2">
-            <i class="fa-regular fa-copy"></i> Copiar Script
-          </button>
-        </div>
-
-        <!-- RESGATE 3: CARLOS RIBEIRO -->
-        <div class="bg-bizzCard rounded-lg border border-bizzCardBorder p-5 flex flex-col justify-between space-y-4">
-          <div>
-            <div class="flex justify-between items-start mb-2">
-              <span class="text-xs font-semibold text-bizzGold font-luxury">Carlos Ribeiro (Chat [25])</span>
-              <span class="text-[10px] uppercase px-2 py-0.5 bg-bizzCopper/20 text-bizzGold border border-bizzCopper/30 rounded">R$ 997,00 + LTV</span>
-            </div>
-            <span class="text-xs text-bizzMuted block mb-3">Imersão Diagnóstica Face & Corpo</span>
-            <div class="p-3 bg-black/60 rounded border border-bizzCardBorder text-xs text-bizzText leading-relaxed script-copy">
-              "Sr. Carlos, boa tarde. Tivemos uma oscilação na nossa linha fixa na sexta-feira e a chamada não foi completada. Como procura uma análise aprofundada de face e corpo com a Dra. Larissa, deixei a janela de amanhã às 14h pré-reservada com exclusividade para finalizarmos o seu agendamento. Podemos confirmar?"
-            </div>
-          </div>
-          <button onclick="copyToClipboard(this)" class="w-full py-2 bg-bizzCopper/20 hover:bg-bizzCopper/40 border border-bizzCopper/50 text-bizzGold rounded text-xs tracking-wider uppercase transition flex items-center justify-center gap-2">
-            <i class="fa-regular fa-copy"></i> Copiar Script
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- INVASÃO OPERACIONAL MÉDICA & RISCO REGULATÓRIO -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      <div class="bg-bizzCard p-6 rounded-lg border border-bizzCardBorder space-y-3">
-        <h4 class="font-luxury text-sm text-bizzGold uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-user-doctor text-bizzCopper"></i> Invasão Operacional Médica (44 Intervenções)
-        </h4>
-        <p class="text-xs text-bizzMuted leading-relaxed">
-          A Dra. Larissa (32 interações) e o Dr. Raphael (12 interações) atuam frequentemente como suporte no WhatsApp da clínica, respondendo a dúvidas de rotina e tentando reativar contactos.
-        </p>
-        <div class="p-3 bg-red-950/20 border border-red-900/30 rounded text-xs text-red-300">
-          <strong>Custo de Oportunidade:</strong> ~R$ 15.000,00/mês em horas clínicas de alto valor desperdiçadas na mediação de mensagens de receção.
-        </div>
-      </div>
-
-      <div class="bg-bizzCard p-6 rounded-lg border border-bizzCardBorder space-y-3">
-        <h4 class="font-luxury text-sm text-bizzGold uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-triangle-exclamation text-red-400"></i> Fricção Clínica & Risco LGPD
-        </h4>
-        <p class="text-xs text-bizzMuted leading-relaxed">
-          Detetado cancelamento de consultas por motivos amadores repassados ao paciente ("renovar passaporte" no Chat [33]; "convite para palestra" no Chat [99]).
-        </p>
-        <div class="p-3 bg-red-950/20 border border-red-900/30 rounded text-xs text-red-300">
-          <strong>Violação LGPD Apurada (Chat [109]):</strong> Envio comprovado de exame laboratorial e dados sensíveis de terceiro por engano via WhatsApp.
-        </div>
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- SCRIPTS DE CONFIGURAÇÃO DO CHART.JS -->
   <script>
-    // 1. Radar Chart: Score Bizz-Gold
-    const ctxRadar = document.getElementById('radarChart').getContext('2d');
-    new Chart(ctxRadar, {
-      type: 'radar',
-      data: {
-        labels: [
-          'Velocidade',
-          'Qualificação (SPIN)',
-          'Ancoragem de Valor',
-          'Contorno de Objeções',
-          'Condução ao Fecho',
-          'Follow-up Estruturado'
-        ],
-        datasets: [{
-          label: 'Desempenho Atual',
-          data: [50, 0, 20, 0, 40, 60],
-          backgroundColor: 'rgba(184, 115, 51, 0.2)',
-          borderColor: '#B87333',
-          pointBackgroundColor: '#D4A853',
-          borderWidth: 2
-        }, {
-          label: 'Padrão Ouro bizz.ia',
-          data: [90, 85, 90, 85, 95, 90],
-          backgroundColor: 'transparent',
-          borderColor: 'rgba(212, 168, 83, 0.4)',
-          borderDash: [5, 5],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          r: {
-            angleLines: { color: 'rgba(255, 255, 255, 0.08)' },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            pointLabels: { color: '#8E8D8A', font: { size: 10 } },
-            ticks: { display: false, max: 100, min: 0 }
-          }
+    const SALT = 'CLnGwQnm30Zc/TigTHIqBA==';
+    const IV = 'O7+wrIfuFQ9lPTFpJDUgOA==';
+    const CIPHER = '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';
+    const MAGIC = 'BIZZIA_OK:';
+
+    function unlock() {
+      const pw = document.getElementById('pw').value;
+      const err = document.getElementById('err');
+      if (!pw) { err.textContent = 'Digite a senha.'; return; }
+      try {
+        const key = CryptoJS.PBKDF2(pw, CryptoJS.enc.Base64.parse(SALT), { keySize: 256 / 32, iterations: 100000 });
+        const dec = CryptoJS.AES.decrypt(
+          { ciphertext: CryptoJS.enc.Base64.parse(CIPHER) },
+          key,
+          { iv: CryptoJS.enc.Base64.parse(IV), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
+        );
+        const plain = dec.toString(CryptoJS.enc.Utf8);
+        if (plain.indexOf(MAGIC) === 0) {
+          document.getElementById('login').style.display = 'none';
+          const app = document.getElementById('app');
+          app.innerHTML = plain.slice(MAGIC.length);
+          app.style.display = 'block';
+          drawCharts();
+          document.getElementById('year').textContent = new Date().getFullYear();
+          window.scrollTo(0, 0);
+        } else {
+          err.textContent = 'Senha incorreta.';
+        }
+      } catch (e) {
+        err.textContent = 'Senha incorreta.';
+      }
+    }
+
+    document.getElementById('pw').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') unlock();
+    });
+
+    function drawCharts() {
+      // 1. Radar Chart: Score Bizz-Gold
+      const ctxRadar = document.getElementById('radarChart').getContext('2d');
+      new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+          labels: [
+            'Velocidade',
+            'Qualificação (SPIN)',
+            'Ancoragem de Valor',
+            'Contorno de Objeções',
+            'Condução ao Fecho',
+            'Follow-up Estruturado'
+          ],
+          datasets: [{
+            label: 'Desempenho Atual',
+            data: [50, 0, 20, 0, 40, 60],
+            backgroundColor: 'rgba(184, 115, 51, 0.2)',
+            borderColor: '#B87333',
+            pointBackgroundColor: '#D4A853',
+            borderWidth: 2
+          }, {
+            label: 'Padrão Ouro bizz.ia',
+            data: [90, 85, 90, 85, 95, 90],
+            backgroundColor: 'transparent',
+            borderColor: 'rgba(212, 168, 83, 0.4)',
+            borderDash: [5, 5],
+            borderWidth: 1
+          }]
         },
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: { color: '#F0EDE8', font: { size: 10 } }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255, 255, 255, 0.08)' },
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              pointLabels: { color: '#8E8D8A', font: { size: 10 } },
+              ticks: { display: false, max: 100, min: 0 }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#F0EDE8', font: { size: 10 } }
+            }
           }
         }
-      }
-    });
+      });
 
-    // 2. Doughnut Chart: Funil de Triagem
-    const ctxFunnel = document.getElementById('funnelChart').getContext('2d');
-    new Chart(ctxFunnel, {
-      type: 'doughnut',
-      data: {
-        labels: ['Oportunidades Comerciais Válidas', 'Ruído Operacional & Suporte', 'Spam / Fantasmas'],
-        datasets: [{
-          data: [38, 62, 15],
-          backgroundColor: ['#D4A853', '#B87333', '#2A2A2A'],
-          borderColor: '#000000',
-          borderWidth: 3
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: { color: '#F0EDE8', font: { size: 10 } }
+      // 2. Doughnut Chart: Funil de Triagem
+      const ctxFunnel = document.getElementById('funnelChart').getContext('2d');
+      new Chart(ctxFunnel, {
+        type: 'doughnut',
+        data: {
+          labels: ['Oportunidades Comerciais Válidas', 'Ruído Operacional & Suporte', 'Spam / Fantasmas'],
+          datasets: [{
+            data: [38, 62, 15],
+            backgroundColor: ['#D4A853', '#B87333', '#2A2A2A'],
+            borderColor: '#000000',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#F0EDE8', font: { size: 10 } }
+            }
           }
         }
-      }
-    });
+      });
+    }
 
-    // Função de Copiar Script
     function copyToClipboard(button) {
-      const scriptText = button.previousElementSibling.querySelector('.script-copy').innerText.trim().replace(/^[""]|[""]$/g, '');
+      const scriptText = button.previousElementSibling.querySelector('.script-copy').innerText.trim().replace(/^[“"]|[”"]$/g, '');
       const done = () => {
         const originalContent = button.innerHTML;
         button.innerHTML = '<i class="fa-solid fa-check text-green-400"></i> Copiado!';
@@ -444,32 +237,5 @@
       }
     }
   </script>
-
-  <!-- CTA + RODAPÉ -->
-  <footer class="border-t border-bizzCardBorder mt-20 px-6 py-12">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-      <div>
-        <div class="flex items-center space-x-3 mb-4">
-          <div class="w-9 h-9 border border-bizzGold flex items-center justify-center rounded-sm bg-bizzCard">
-            <span class="font-luxury text-bizzGold font-bold text-lg">B</span>
-          </div>
-          <span class="font-luxury text-bizzText uppercase tracking-wider text-sm">bizz.ia · Engenharia Forense de Conversão</span>
-        </div>
-        <p class="text-xs text-bizzMuted leading-relaxed">Diagnóstico assistivo de conversão comercial para clínicas premium. Transformamos conversas de WhatsApp em receita recorrente e previsível.</p>
-      </div>
-      <div class="text-xs text-bizzMuted leading-relaxed space-y-2">
-        <h5 class="font-luxury text-bizzGold uppercase tracking-wider text-sm">Aviso de Responsabilidade</h5>
-        <p>Documento de diagnóstico gerado com apoio de IA, de caráter ilustrativo e assistivo. Não substitui avaliação médica, jurídica ou contábil. A decisão final é sempre médica. Tratamento de dados em conformidade com a LGPD (Lei nº 13.709/2018).</p>
-      </div>
-      <div class="text-xs text-bizzMuted space-y-2">
-        <h5 class="font-luxury text-bizzGold uppercase tracking-wider text-sm">Protocolo Blind-Audit™</h5>
-        <p>Metodologia proprietária de auditoria dos 6 eixos comerciais: velocidade, qualificação (SPIN), ancoragem de valor, contorno de objeções, condução ao fecho e follow-up estruturado.</p>
-      </div>
-    </div>
-    <div class="max-w-7xl mx-auto mt-10 pt-6 border-t border-bizzCardBorder text-center text-[10px] text-bizzMuted uppercase tracking-widest">
-      © <span id="year"></span> BIZZ.IA · Todos os direitos reservados
-    </div>
-  </footer>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
